@@ -83,13 +83,12 @@ class ConfigureContainer extends Component {
   }
 
   handleName(name) {
-    this.setState({ formula: { ...this.state.formula, name }, valid: name.length > 0 });
+    this.setState({ formula: { ...this.state.formula, name } });
   }
 
   handleChange(formulaPart, fieldName, fieldValue) {
     // TODO: state should be treated as immutable
     this.state.formula[`${formulaPart}_fields`][fieldName] = fieldValue;
-    this.setState({ valid: fieldValue.length > 0 });
   }
 
   render() {
@@ -101,6 +100,7 @@ class ConfigureContainer extends Component {
         <Configure
           selectedAction={this.state.selectedAction}
           selectedReaction={this.state.selectedReaction}
+          formula={this.state.formula}
           handleName={this.handleName}
           handleChange={this.handleChange}
           valid={this.state.valid}

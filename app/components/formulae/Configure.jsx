@@ -3,14 +3,18 @@ import React, { PropTypes } from 'react';
 const Configure = ({
   selectedAction,
   selectedReaction,
+  formula,
   handleName,
   handleChange,
   valid,
   onSave,
 }) => (
   <div className="space-top nine columns componentContainer row">
-    <h3>Name your formula</h3>
-    <input onChange={(e) => { handleName(e.target.value); }} />
+    <h3>Name your formula ({formula.name})</h3>
+    <input
+      value={formula.name}
+      onChange={(e) => { handleName(e.target.value); }}
+    />
 
     <h3>{selectedAction && selectedAction.name} Fields</h3>
     {selectedAction.fields.length < 1 ?
@@ -20,7 +24,10 @@ const Configure = ({
       selectedAction.fields.map((field, index) => (
         <div key={index}>
           <h3>{field.name}</h3>
-          <input onChange={(e) => { handleChange('action', field.name, e.target.value); }} />
+          <input
+            value={formula.action_fields[field] || ''}
+            onChange={(e) => { handleChange('action', field.name, e.target.value); }}
+          />
           <span className="divider" />
         </div>
       ))
@@ -34,20 +41,24 @@ const Configure = ({
       selectedReaction.fields.map((field, index) => (
         <div key={index}>
           <h3>{field.name}</h3>
-          <input onChange={(e) => { handleChange('reaction', field.name, e.target.value); }} />
+          <input
+            value={formula.reaction_fields[field] || ''}
+            onChange={(e) => { handleChange('reaction', field.name, e.target.value); }}
+          />
           <span className="divider" />
         </div>
       ))
     }
 
     {valid ? null : <p>please fill out all required fields.</p>}
-    {valid ? <a className="button" onClick={onSave}>save</a> : <span className="button">save</span>}
+    <a className="button" onClick={onSave}>save</a>
   </div>
 );
 
 Configure.propTypes = {
   selectedAction: PropTypes.object.isRequired,
   selectedReaction: PropTypes.object.isRequired,
+  formula: PropTypes.object.isRequired,
   handleName: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   valid: PropTypes.bool.isRequired,
